@@ -1,15 +1,6 @@
 USE [master]
 GO
-/*
-
-CREATE DATABASE
-
-*/
-IF DB_ID('Aseni') IS NOT NULL
-BEGIN
-   DROP DATABASE [Aseni]
-END
-
+/****** Object:  Database [Aseni]    Script Date: 3/21/2022 5:55:01 PM ******/
 CREATE DATABASE [Aseni]
  CONTAINMENT = NONE
  ON  PRIMARY 
@@ -91,23 +82,11 @@ ALTER DATABASE [Aseni] SET QUERY_STORE = OFF
 GO
 USE [Aseni]
 GO
-
-/*
-
-CREATE TABLES
-
-*/
-
--- ACTIONS TABLE
+/****** Object:  Table [dbo].[ACTIONS]    Script Date: 3/21/2022 5:55:01 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[ACTIONS]') AND type in (N'U'))
-DROP TABLE [dbo].[ACTIONS]
-GO
-
 CREATE TABLE [dbo].[ACTIONS](
 	[IdAction] [int] IDENTITY(1,1) NOT NULL,
 	[IdPlan] [int] NOT NULL,
@@ -118,17 +97,28 @@ CREATE TABLE [dbo].[ACTIONS](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-
--- CANTONS TABLE
+/****** Object:  Table [dbo].[Califications]    Script Date: 3/21/2022 5:55:01 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[CANTONS]') AND type in (N'U'))
-DROP TABLE [dbo].[CANTONS]
+CREATE TABLE [dbo].[Califications](
+	[IdCalification] [int] IDENTITY(1,1) NOT NULL,
+	[IdUser] [int] NOT NULL,
+	[IdDeriverable] [int] NOT NULL,
+	[Value] [float] NOT NULL,
+	[PostTime] [datetime] NOT NULL,
+ CONSTRAINT [PK_Califications] PRIMARY KEY CLUSTERED 
+(
+	[IdCalification] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
 GO
-
+/****** Object:  Table [dbo].[CANTONS]    Script Date: 3/21/2022 5:55:01 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
 CREATE TABLE [dbo].[CANTONS](
 	[IdCanton] [int] IDENTITY(1,1) NOT NULL,
 	[IdProvince] [int] NOT NULL,
@@ -139,17 +129,11 @@ CREATE TABLE [dbo].[CANTONS](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-
--- DELIVERABLES TABLE
+/****** Object:  Table [dbo].[DELIVERABLES]    Script Date: 3/21/2022 5:55:01 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DELIVERABLES]') AND type in (N'U'))
-DROP TABLE [dbo].[DELIVERABLES]
-GO
-
 CREATE TABLE [dbo].[DELIVERABLES](
 	[IdDeriverable] [int] IDENTITY(1,1) NOT NULL,
 	[IdAction] [int] NOT NULL,
@@ -157,24 +141,19 @@ CREATE TABLE [dbo].[DELIVERABLES](
 	[IdCanton] [int] NOT NULL,
 	[KPIValue] [int] NOT NULL,
 	[KPIType] [varchar](8) NOT NULL,
-	[EndDate] [datetime] NOT NULL,
+	[PostTime] [datetime] NOT NULL,
+	[CheckSum] [varchar](64) NOT NULL,
  CONSTRAINT [PK_DELIVERABLES] PRIMARY KEY CLUSTERED 
 (
 	[IdDeriverable] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-
--- PARTIES TABLE
+/****** Object:  Table [dbo].[PARTIES]    Script Date: 3/21/2022 5:55:01 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[PARTIES]') AND type in (N'U'))
-DROP TABLE [dbo].[PARTIES]
-GO
-
 CREATE TABLE [dbo].[PARTIES](
 	[IdParty] [int] IDENTITY(1,1) NOT NULL,
 	[Name] [varchar](32) NOT NULL,
@@ -187,17 +166,11 @@ CREATE TABLE [dbo].[PARTIES](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
-
--- PLANS TABLE
+/****** Object:  Table [dbo].[PLANS]    Script Date: 3/21/2022 5:55:01 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[PLANS]') AND type in (N'U'))
-DROP TABLE [dbo].[PLANS]
-GO
-
 CREATE TABLE [dbo].[PLANS](
 	[IdPlan] [int] IDENTITY(1,1) NOT NULL,
 	[IdParty] [int] NOT NULL,
@@ -209,17 +182,11 @@ CREATE TABLE [dbo].[PLANS](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
-
--- PROVINCES TABLE
+/****** Object:  Table [dbo].[PROVINCES]    Script Date: 3/21/2022 5:55:01 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[PROVINCES]') AND type in (N'U'))
-DROP TABLE [dbo].[PROVINCES]
-GO
-
 CREATE TABLE [dbo].[PROVINCES](
 	[IdProvince] [int] IDENTITY(1,1) NOT NULL,
 	[Name] [varchar](32) NOT NULL,
@@ -229,42 +196,32 @@ CREATE TABLE [dbo].[PROVINCES](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-
--- USERS TABLE
+/****** Object:  Table [dbo].[USERS]    Script Date: 3/21/2022 5:55:01 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[USERS]') AND type in (N'U'))
-DROP TABLE [dbo].[USERS]
-GO
-
 CREATE TABLE [dbo].[USERS](
 	[IdUser] [int] IDENTITY(1,1) NOT NULL,
 	[IdUserType] [int] NOT NULL,
+	[IdCanton] [int] NOT NULL,
 	[Name] [varchar](50) NOT NULL,
 	[LastName] [varchar](50) NOT NULL,
 	[Password] [varchar](50) NOT NULL,
 	[UrlPicture] [varchar](50) NOT NULL,
 	[CreationDate] [datetime] NOT NULL,
+	[IdenNumber] [varchar](50) NOT NULL,
  CONSTRAINT [PK_USERS] PRIMARY KEY CLUSTERED 
 (
 	[IdUser] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-
--- USERTYPE TABLE
+/****** Object:  Table [dbo].[USERTYPE]    Script Date: 3/21/2022 5:55:01 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[USERTYPE]') AND type in (N'U'))
-DROP TABLE [dbo].[USERTYPE]
-GO
-
 CREATE TABLE [dbo].[USERTYPE](
 	[IdUserType] [int] IDENTITY(1,1) NOT NULL,
 	[Name] [varchar](32) NOT NULL,
@@ -274,12 +231,20 @@ CREATE TABLE [dbo].[USERTYPE](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-
-
 ALTER TABLE [dbo].[ACTIONS]  WITH CHECK ADD  CONSTRAINT [FK_ACTIONS_PLANS] FOREIGN KEY([IdPlan])
 REFERENCES [dbo].[PLANS] ([IdPlan])
 GO
 ALTER TABLE [dbo].[ACTIONS] CHECK CONSTRAINT [FK_ACTIONS_PLANS]
+GO
+ALTER TABLE [dbo].[Califications]  WITH CHECK ADD  CONSTRAINT [FK_Califications_DELIVERABLES] FOREIGN KEY([IdDeriverable])
+REFERENCES [dbo].[DELIVERABLES] ([IdDeriverable])
+GO
+ALTER TABLE [dbo].[Califications] CHECK CONSTRAINT [FK_Califications_DELIVERABLES]
+GO
+ALTER TABLE [dbo].[Califications]  WITH CHECK ADD  CONSTRAINT [FK_Califications_USERS] FOREIGN KEY([IdUser])
+REFERENCES [dbo].[USERS] ([IdUser])
+GO
+ALTER TABLE [dbo].[Califications] CHECK CONSTRAINT [FK_Califications_USERS]
 GO
 ALTER TABLE [dbo].[CANTONS]  WITH CHECK ADD  CONSTRAINT [FK_CANTONS_PROVINCES] FOREIGN KEY([IdProvince])
 REFERENCES [dbo].[PROVINCES] ([IdProvince])
@@ -306,225 +271,116 @@ REFERENCES [dbo].[PARTIES] ([IdParty])
 GO
 ALTER TABLE [dbo].[PLANS] CHECK CONSTRAINT [FK_PLANS_PARTIES]
 GO
+ALTER TABLE [dbo].[USERS]  WITH CHECK ADD  CONSTRAINT [FK_USERS_CANTONS] FOREIGN KEY([IdCanton])
+REFERENCES [dbo].[CANTONS] ([IdCanton])
+GO
+ALTER TABLE [dbo].[USERS] CHECK CONSTRAINT [FK_USERS_CANTONS]
+GO
 ALTER TABLE [dbo].[USERS]  WITH CHECK ADD  CONSTRAINT [FK_USERS_USERTYPE] FOREIGN KEY([IdUserType])
 REFERENCES [dbo].[USERTYPE] ([IdUserType])
 GO
 ALTER TABLE [dbo].[USERS] CHECK CONSTRAINT [FK_USERS_USERTYPE]
 GO
+/****** Object:  StoredProcedure [dbo].[GetPlayer]    Script Date: 3/21/2022 5:55:01 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+--------------------------------------------------------------------------
+CREATE PROCEDURE [dbo].[GetPlayer]
+--------------------------------------------------------------------------
+-- GetPlayer
+-- Gunther Karolyi
+-- Bases II
+-- Grupo 01
+/*
+ Returns players with the same password
+*/
+--------------------------------------------------------------------------
+
+@Password varchar(32)
+
+AS
+	-- Get Time Zone Offset
+	DECLARE @Offset int = DATEPART(tzoffset,SYSDATETIMEOFFSET())
+
+	-- Return Players
+	SELECT 
+		Username,
+		LastModification AS DateUTC,
+		DATEADD(MINUTE, @Offset, LastModification) AS Localtime
+	FROM dbo.PLAYERS
+	WHERE [Password] = @Password
+	ORDER BY Username;
+	
+	
+GO
+/****** Object:  StoredProcedure [dbo].[InsertPlayer]    Script Date: 3/21/2022 5:55:01 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+--------------------------------------------------------------------------
+CREATE PROCEDURE [dbo].[InsertPlayer]
+--------------------------------------------------------------------------
+-- InsertPlayer
+-- Gunther Karolyi
+-- Bases II
+-- Grupo 01
+/*
+ Inserts a new register in the PLAYERS table
+*/
+--------------------------------------------------------------------------
+@Username varchar(32),
+@Password varchar(32),
+@LastMod datetime
+
+AS
+	-- Get Time Zone Offset
+	DECLARE @Offset int = DATEPART(tzoffset,SYSDATETIMEOFFSET())
+
+	-- Insert New Player
+	INSERT INTO [dbo].[PLAYERS]
+           ([Username]
+           ,[Password]
+           ,[LastModification])
+     VALUES
+           (@Username
+           ,@Password
+           ,DATEADD(MINUTE, -@Offset, @LastMod))
+	
+GO
+/****** Object:  StoredProcedure [dbo].[Query1]    Script Date: 3/21/2022 5:55:01 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+--------------------------------------------------------------------------
+CREATE PROCEDURE [dbo].[Query1]
+--------------------------------------------------------------------------
+-- Query1
+/*
+ Listar todos los entregables agrupados por partido para un cantón dado 
+ por parámetro y cada hilo usa un cantón diferente.
+*/
+--------------------------------------------------------------------------
+@IdCanton int
+AS
+	
+	SELECT 
+		ACTIONS.[Description] + CAST(DELIVERABLES.KPIValue AS varchar(16)) + DELIVERABLES.KPIType AS [Description],
+		PARTIES.[Name] AS 'Party'
+	FROM dbo.DELIVERABLES 
+		JOIN dbo.PLANS  WITH(NOLOCK) ON (DELIVERABLES.IdPlan = PLANS.IdPlan)
+		JOIN dbo.ACTIONS WITH (NOLOCK) ON (DELIVERABLES.IdAction = ACTIONS.IdAction)
+		JOIN dbo.PARTIES WITH(NOLOCK) ON (PLANS.IdParty = PARTIES.IdParty)
+	WHERE IdCanton = @IdCanton
+	ORDER BY PLANS.IdParty;
+GO
 USE [master]
 GO
 ALTER DATABASE [Aseni] SET  READ_WRITE 
-GO
-
-/*
-
-INSERT TABLE REGISTERS
-
-*/
-
-INSERT INTO [dbo].[USERTYPE]
-           ([Name])
-     VALUES
-           ('Citizen'),
-           ('CampaignManager')
-GO
-
-INSERT INTO [dbo].[USERS]
-           ([IdUserType]
-           ,[Name]
-           ,[LastName]
-           ,[Password]
-           ,[UrlPicture]
-           ,[CreationDate])
-     VALUES
-           (1
-           ,'Gunther'
-           ,'Karolyi'
-           ,'Password'
-           ,'URL'
-           ,CURRENT_TIMESTAMP),
-
-		   (2
-           ,'Gunther'
-           ,'Karolyi'
-           ,'Password'
-           ,'URL'
-           ,CURRENT_TIMESTAMP)
-GO
-
-INSERT INTO [dbo].[PROVINCES]
-           ([Name])
-     VALUES
-           ('Cartago'),
-		   ('San Jose'),
-		   ('Guanacaste'),
-		   ('Limon'),
-		   ('Puntarenas'),
-		   ('Alajuela'),
-		   ('Heredia')
-GO
-
-INSERT INTO [dbo].[CANTONS]
-           ([IdProvince]
-           ,[Name])
-     VALUES
-           (2
-           ,'San Jose'),
-		   (2
-           ,'Desamparados'),
-
-		   (6
-           ,'San Ramon'),
-		   (6
-           ,'San Carlos'),
-
-		   (1
-           ,'El Guarco'),
-		   (1
-           ,'Cartago'),
-
-		   (3
-           ,'Liberia'),
-		   (3
-           ,'Cañas')
-GO
-
-INSERT INTO [dbo].[PARTIES]
-           ([Name]
-           ,[Description]
-           ,[UrlFlag]
-           ,[CreationDate])
-     VALUES
-           ('Partido Liberacion Nacional'
-           ,'Somos unas ratas'
-           ,'URL'
-           ,CURRENT_TIMESTAMP),
-
-		   ('Partido Accion Ciudadana'
-           ,'Somos unas vistimas'
-           ,'URL'
-           ,CURRENT_TIMESTAMP),
-
-		   ('Partido Unidad Social Cristiana'
-           ,'No tenemos plan de gobierno'
-           ,'URL'
-           ,CURRENT_TIMESTAMP),
-
-		   ('Partido Frente Amplio'
-           ,'Vamos a salvar el pais'
-           ,'URL'
-           ,CURRENT_TIMESTAMP)
-GO
-
-INSERT INTO [dbo].[PLANS]
-           ([IdParty]
-           ,[Title]
-           ,[Description])
-     VALUES
-           (1
-           ,'Plan de Gobierno 2022'
-           ,'Este es el plan para que Figueres se robe toda la plata ...'),
-
-		   (2
-           ,'Plan de Gobierno 2022'
-           ,'Que pelada, no vamos a ganar ...'),
-
-		   (3
-           ,'Plan de Gobierno 2022'
-           ,'Que era un plan de gobierno? ...'),
-
-		   (4
-           ,'Plan de Gobierno 2022'
-           ,'Este es el mejor plan de gobierno, con el que vamos a salvar al pais')
-GO
-
-INSERT INTO [dbo].[ACTIONS]
-           ([IdPlan]
-           ,[Description])
-     VALUES
-           (1
-           ,'Estafar al pueblo'),
-		    (1
-           ,'Robar Dinero'),
-		    (1
-           ,'Huir con el dinero'),
-
-		   (2
-           ,'Llorar por ser el peor partido'),
-		    (2
-           ,'Hacerse la vistima'),
-		    (2
-           ,'Volver a llorar'),
-
-		   (3
-           ,'Hablar sin decir nada'),
-		    (3
-           ,'Mejorar el apoyo hacia las mujeres'),
-		    (3
-           ,'Ver que pasa en el camino'),
-
-		   (4
-           ,'Mejorar la economia del pais'),
-		    (4
-           ,'Mejorar la educacion'),
-		    (4
-           ,'Asfaltar carreteras')
-GO
-
--- Insert Deliverables Data --
-
--- Get Number of Actions
-DECLARE @NumberActions int
-SELECT @NumberActions = COUNT(IdAction)
-FROM dbo.ACTIONS
-
--- Get Number of Cantons
-DECLARE @NumberCantons int
-SELECT @NumberCantons = COUNT(IdCanton)
-FROM dbo.CANTONS
-
--- Iterate Actions Table
-DECLARE @CurrentIdAction int = 1
-DECLARE @CurrentIdPlan int
-DECLARE @RandNumber int
-
-WHILE @CurrentIdAction <= @NumberActions
-BEGIN
-	-- Get Data From Current Action
-	SELECT 
-		@CurrentIdPlan = IdPlan
-	FROM dbo.ACTIONS
-	WHERE IdAction = @CurrentIdAction
-	
-	-- Generate a Random Number of Deliverables
-	SET @RandNumber = CAST(RAND()*(8-3)+3 AS int) -- [3,8[
-
-	WHILE @RandNumber > 0 
-	BEGIN
-		
-		-- Insert Random Number of Deliverables
-		INSERT INTO [dbo].[DELIVERABLES]
-           ([IdAction]
-           ,[IdPlan]
-           ,[IdCanton]
-           ,[KPIValue]
-           ,[KPIType]
-           ,[EndDate])
-		VALUES
-           (@CurrentIdAction
-           ,@CurrentIdPlan
-           ,CAST(RAND()*(@NumberCantons)+1 AS int)
-           ,100
-           ,'UNDS'
-           ,CURRENT_TIMESTAMP)
-
-		-- Decrement Counter
-		 SET @RandNumber = @RandNumber - 1
-	END
-
-	-- Increment Counter
-	SET @CurrentIdAction = @CurrentIdAction + 1
-
-END
-
 GO
