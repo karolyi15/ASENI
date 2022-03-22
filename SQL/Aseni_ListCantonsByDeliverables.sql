@@ -9,14 +9,19 @@ CREATE PROCEDURE dbo.Aseni_ListCantonsByDeliverables
 -- Created.
 --
 --------------------------------------------------------------------------
-@ElectionYear date
+@ElectionDate date
 
 AS
 
-	-- Get
 	SELECT
 		CANTONS.[Name]
 	FROM dbo.DELIVERABLES WITH(NOLOCK)
 		JOIN dbo.CANTONS WITH(NOLOCK) ON(DELIVERABLES.IdCanton = CANTONS.IdCanton)
-	WHERE DATEPART(YEAR, DELIVERABLES.PostTime) = DATEPART(YEAR, @ElectionYear)
+	WHERE DELIVERABLES.PostTime <= DATEADD(DAY, 100, @ElectionDate)
+	EXCEPT
+	SELECT
+		CANTONS.[Name]
+	FROM dbo.DELIVERABLES WITH(NOLOCK)
+		JOIN dbo.CANTONS WITH(NOLOCK) ON(DELIVERABLES.IdCanton = CANTONS.IdCanton)
+	WHERE DELIVERABLES.PostTime >= DATEADD(DAY, -100,DATEADD(YEAR, 4, @ElectionDate))
 GO
