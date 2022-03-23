@@ -1,0 +1,23 @@
+{
+  "name": "caso-2",
+  "version": "1.0.0",
+  "description": "caso 2 bases de datos II ",
+  "main": "index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "tsc index.ts && node index.js"
+  },
+  "author": "Adrian Vargas",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.2",
+    "express": "^4.17.3",
+    "http": "0.0.1-security",
+    "mssql": "^8.0.2",
+    "tsc": "^2.0.4",
+    "typescript": "^4.6.2"
+  },
+  "devDependencies": {
+    "@types/node": "^17.0.21"
+  }
+}
